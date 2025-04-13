@@ -1,37 +1,24 @@
 import { useState } from 'react';
 
-const Display = ({ counter }) => <div>{counter}</div>;
+const Button = (props) => <button onClick={props.onClick}>{props.text}</button>;
 
-const Button = ({ onClick, text }) => <button onClick={onClick}>{text}</button>;
+const Display = props => <div>{props.value}</div>
 
 const App = () => {
-  const [clicks, setClicks] = useState({
-    left: 0,
-    right: 0,
-  });
+  const [value, setValue] = useState(0)
 
-  const handleLeftClick = () => {
-    const newClicks = {
-      left: clicks.left + 1,
-      right: clicks.right,
-    };
-    setClicks(newClicks);
-  };
-  const handleRightClick = () => {
-    const newClicks = {
-      left: clicks.left,
-      right: clicks.right + 1,
-    };
-    setClicks(newClicks);
-  };
+  const setToValue = newValue => {
+    console.log('value now', newValue)
+    setValue(newValue)
+  }
 
   return (
     <div>
-      {clicks.left}
-      <button onClick={handleLeftClick}>left</button>
-      <button onClick={handleRightClick}>right</button>
-      {clicks.right}
+      <Display value={value} />
+      <Button onClick={() => setToValue(1000)} text="thousand" />
+      <Button onClick={() => setToValue(0)} text="reset" />
+      <Button onClick={() => setToValue(value + 1)} text="increment" />
     </div>
-  );
-};
+  )
+}
 export default App;
