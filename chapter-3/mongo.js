@@ -1,7 +1,7 @@
 require('dotenv').config()
 const mongoose = require('mongoose')
 
-const url = process.env.MONGODB_URI
+const url = process.env.MONGO_URI
 
 if (!url) {
     console.log('MONGODB_URI environment variable is required')
