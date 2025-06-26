@@ -4,7 +4,7 @@ const mongoose = require('mongoose')
 const url = process.env.MONGO_URI
 
 if (!url) {
-    console.log('MONGODB_URI environment variable is required')
+    console.log('MONGO_URI environment variable is missing')
     process.exit(1)
 }
 
@@ -18,19 +18,23 @@ const noteSchema = new mongoose.Schema({
 
 const Note = mongoose.model('Note', noteSchema)
 
-// const note = new Note({
-//   content: 'HTML is easy',
-//   important: true,
-// })
+const note = new Note({
+    content: 'HTML is easy',
+    important: true,
+})
 
-// // note.save().then((result) => {
-// //   console.log('note saved!')
-// //   mongoose.connection.close()
-// // })
-
-Note.find({}).then((result) => {
+// Save the note first, then find all notes
+note.save().then((result) => {
+    console.log('note saved!')
+    // After saving, find all notes
+    return Note.find({})
+}).then((result) => {
     result.forEach((note) => {
         console.log(note)
     })
+    // Close connection only once, after both operations are done
+    mongoose.connection.close()
+}).catch((error) => {
+    console.error('Error:', error)
     mongoose.connection.close()
 })
